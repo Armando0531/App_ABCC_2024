@@ -26,8 +26,8 @@ public class AlumnoController {
 
 	@GetMapping("/agregar")
 	public String mostrarFormularioDeAgregar(Model model) {
-	    model.addAttribute("alumno", new Alumno());  // Añade un objeto alumno vacío para el formulario
-	    return "formulario_agregar";  // El nombre de la vista del formulario
+	    model.addAttribute("alumno", new Alumno());  
+	    return "formulario_agregar";  
 	}
 	
 	@PostMapping("/guardarNuevo")
@@ -37,7 +37,7 @@ public class AlumnoController {
             redirectAttributes.addFlashAttribute("errorMessage", "No se puede crear un nuevo alumno porque ya existe alguien con ese número de control.");
             return "redirect:/agregar";
         } else {
-            alumnoService.guardarAlumno(alumno);  // Asegúrate de que esto llama a un método en el servicio que a su vez llama a `save` en el repositorio
+            alumnoService.guardarAlumno(alumno);  
             return "redirect:/";
         }
     }
@@ -57,13 +57,29 @@ public class AlumnoController {
 	    } catch (Exception e) {
 	        redirectAttributes.addFlashAttribute("errorMessage", "Error al eliminar el alumno.");
 	    }
-	    return "redirect:/";  // Asegúrate de redirigir a la vista adecuada después de la operación
+	    return "redirect:/";  
 	}
 	
-	@GetMapping("/editar/{id}")
-	public String editar(Model modelo, @PathVariable String id) {
-		Alumno alumno = alumnoService.obtenerAlumno(id);
-		modelo.addAttribute("alumno", alumno);
-		return "form";
+	@GetMapping("/editar/{numControl}")
+	public String editarAlumno(@PathVariable String numControl, Model model) {
+	    Alumno alumno = alumnoService.obtenerAlumno(numControl);
+	    if (alumno != null) {
+	        model.addAttribute("alumno", alumno);
+	        return "formulario_editar";  
+	    } else {
+	        return "redirect:/"; 
+	    }
 	}
+	
+	@PostMapping("/actualizar2")
+	public String actualizarAlumno(@ModelAttribute("alumno") Alumno alumno, RedirectAttributes redirectAttributes) {
+	    try {
+	        alumnoService.actualizarAlumno(alumno);
+	        redirectAttributes.addFlashAttribute("successMessage", "Alumno actualizado con éxito.");
+	    } catch (Exception e) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "Error al actualizar el alumno.");
+	    }
+	    return "redirect:/";
+	}
+
 }
