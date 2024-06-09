@@ -14,39 +14,25 @@
 		<a th:href="@{/agregar}" class="btn btn-primary"> AGREGAR ALUMNO </a>
 
 		<table class="table">
-			<thead>
-				<tr>
-					<th scope="col">Num. Control</th>
-					<th scope="col">Nombre</th>
-					<th scope="col">ACCIONES</th>
-				</tr>
-			</thead>
-			<tbody>
-			
-				<tr><td>00</td> <td>Nombre Prueba</td>
-			
-				<td> 
-					 <a href="" class="btn btn-warning"> EDITAR </a> 
-					<a href="" class="btn btn-danger"> ELIMINAR </a> 
-				</td>
-					
-					
-			
-				<tr th:each="a: ${listaAlumnos}">
-				
-					<td th:text="${a.getNumControl()}" />
-					<td th:text="${a.getNombre}" />
-					
-					<td> 
-						<!-- <a href="@{/editar}+${alumno.numControl}"> EDITAR </a> -->
-						<a th:href="@{/alumnos/}+${a.getNumControl()}">EDITAR</a>
-						
-						<!--<a href="@{/eliminar}+${alumno.numControl}"> ELIMINAR </a> -->
-						<a th:onclick="eliminar([[${a.getNumControl()}]])" href="#">ELIMINAR</a>
-					</td>
-				</tr>
-			</tbody>
+		    <thead>
+		        <tr>
+		            <th scope="col">Num. Control</th>
+		            <th scope="col">Nombre</th>
+		            <th scope="col">ACCIONES</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <tr th:each="a : ${listaAlumnos}">
+		            <td th:text="${a.getNumControl()}"></td>
+		            <td th:text="${a.getNombre()}"></td>
+		            <td>
+		                <a th:href="@{'/editar/' + ${a.getNumControl()}}" class="btn btn-warning">EDITAR</a>
+		                <a th:href="@{'/eliminar/' + ${a.getNumControl()}}" class="btn btn-danger" th:onclick="'return confirm(\'¿Estás seguro de que quieres eliminar este alumno?\');'">ELIMINAR</a>
+		            </td>
+		        </tr>
+		    </tbody>
 		</table>
+				
 	</div>
 	
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
