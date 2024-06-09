@@ -9,8 +9,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class AlumnoServiceImplement implements AlumnoService{
 	
+	private final AlumnoRepository alumnoRepository;
+	
 	@Autowired
-	private AlumnoRepository alumnoRepository;
+    public AlumnoServiceImplement(AlumnoRepository alumnoRepository) {
+        this.alumnoRepository = alumnoRepository;
+    }
 
 	@Override
 	public void guardarAlumno(Alumno alumno) {
@@ -23,10 +27,11 @@ public class AlumnoServiceImplement implements AlumnoService{
 	}
 	
 	@Override
-	public void actualizarAlumno(Alumno alumno) {
-		//this.alumnoRepository.update(alumno);
-		
-	}
+    public void actualizarAlumno(Alumno alumno) {
+        Alumno existente = alumnoRepository.findById(alumno.getNumControl()).orElseThrow(() -> new RuntimeException("Alumno no encontrado"));
+        existente.setNombre(alumno.getNombre());
+        alumnoRepository.save(existente);
+    }
 
 	@Override
 	public List<Alumno> obtenerAlumnos() {
@@ -35,17 +40,14 @@ public class AlumnoServiceImplement implements AlumnoService{
 	}
 
 	@Override
-	public Alumno obtenerAlumno(String nc) {
-		
-		Optional<Alumno> o = alumnoRepository.findById(nc);
-		
-		if(o.isPresent())
-			return o.get();
-		else
-			throw new RuntimeException("No se encontro el alumno");
-		
-	}
+    public Alumno obtenerAlumno(String nc) {
+        return alumnoRepository.findById(nc).orElseThrow(() -> new RuntimeException("No se encontró el alumno"));
+    }
 	
+	public Optional<Alumno> buscarPorNumeroDeControl(String numControl) {
+	    return alumnoRepository.findById(numControl);
+	}
+
 	
 	
 }
