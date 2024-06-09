@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<link href=" https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+
+<body>
+
+
+	<div class="container mt-4">
+	
+		<a th:href="@{/agregar}" class="btn btn-primary"> AGREGAR ALUMNO </a>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">Num. Control</th>
+					<th scope="col">Nombre</th>
+					<th scope="col">ACCIONES</th>
+				</tr>
+			</thead>
+			<tbody>
+			
+				<tr><td>00</td> <td>Nombre Prueba</td>
+			
+				<td> 
+					 <a href="" class="btn btn-warning"> EDITAR </a> 
+					<a href="" class="btn btn-danger"> ELIMINAR </a> 
+				</td>
+					
+					
+			
+				<tr th:each="a: ${listaAlumnos}">
+				
+					<td th:text="${a.getNumControl()}" />
+					<td th:text="${a.getNombre}" />
+					
+					<td> 
+						<!-- <a href="@{/editar}+${alumno.numControl}"> EDITAR </a> -->
+						<a th:href="@{/alumnos/}+${a.getNumControl()}">EDITAR</a>
+						
+						<!--<a href="@{/eliminar}+${alumno.numControl}"> ELIMINAR </a> -->
+						<a th:onclick="eliminar([[${a.getNumControl()}]])" href="#">ELIMINAR</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="funciones.js"></script>
+	
+</body>
+</html>
