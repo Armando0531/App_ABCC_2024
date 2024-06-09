@@ -49,10 +49,15 @@ public class AlumnoController {
 		return "redirect:/";
 	}
 	
-	@GetMapping("/eliminar/{id}")
-	public String eliminar(Model modelo, @PathVariable String id) {
-		alumnoService.eliminarAlumno(id);
-		return "redirect:/alumnos"; 
+	@GetMapping("/eliminar/{numControl}")
+	public String eliminarAlumno(@PathVariable String numControl, RedirectAttributes redirectAttributes) {
+	    try {
+	        alumnoService.eliminarAlumno(numControl);
+	        redirectAttributes.addFlashAttribute("successMessage", "Alumno eliminado correctamente.");
+	    } catch (Exception e) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "Error al eliminar el alumno.");
+	    }
+	    return "redirect:/";  // Asegúrate de redirigir a la vista adecuada después de la operación
 	}
 	
 	@GetMapping("/editar/{id}")
